@@ -24,3 +24,4 @@ def main_results():
         "update": query_update(),
         "delete": query_delete(),
     }
+    return results
