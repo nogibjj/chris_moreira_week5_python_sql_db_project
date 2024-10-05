@@ -1,5 +1,6 @@
 # chris_moreira_project_week_5
-
+# Status Badge for Sucessful Run
+[![CI](https://github.com/nogibjj/chris_moreira_week5_python_sql_db_project/actions/workflows/cicd.yml/badge.svg)](https://github.com/nogibjj/chris_moreira_week5_python_sql_db_project/actions/workflows/cicd.yml)
 # File Structure 
 -- Devcontainer Directory -- 
 - Dockerfile: reates a development container based on a Microsoft VS Code image, installs Python and GCC, sets up a virtual environment, and installs dependencies from requirements
