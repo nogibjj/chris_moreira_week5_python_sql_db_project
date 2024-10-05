@@ -1,6 +1,5 @@
 # Query the Database
 
-
 import sqlite3
 
 
@@ -36,10 +35,11 @@ def query_create():
     cursor.execute(
         """
         INSERT INTO SpotifyDB (
-            track_name, artist_name, artist_count, released_year, released_month, released_day, 
-            in_spotify_playlists, in_spotify_charts, streams, in_apple_playlists, key, mode, 
-            danceability_percent, valence_percent, energy_percent, acousticness_percent, 
-            instrumentalness_percent, liveness_percent, speechiness_percent, cover_url
+            track_name, artist_name, artist_count, released_year, released_month, 
+            released_day, in_spotify_playlists, in_spotify_charts, streams, 
+            in_apple_playlists, key, mode, danceability_percent, valence_percent, 
+            energy_percent, acousticness_percent, instrumentalness_percent, 
+            liveness_percent, speechiness_percent, cover_url
         ) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
@@ -54,8 +54,10 @@ def query_create():
 def query_read():
     conn = sqlite3.connect("SpotifyDB.db")
     cursor = conn.cursor()
+
     # read execution
     cursor.execute("SELECT * FROM SpotifyDB LIMIT 10")
+
     conn.close()
     return "Read Success"
 

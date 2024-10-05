@@ -2,7 +2,7 @@ import sqlite3
 import csv
 
 
-# load the csv file and insert into a new sqlite3 database
+# Load the CSV file and insert into a new SQLite3 database
 def load(dataset="data/Spotify_Most_Streamed_Songs.csv"):
     """Transforms and Loads data into the local SQLite3 database"""
     payload = csv.reader(open(dataset, newline=""), delimiter=",")
@@ -43,17 +43,18 @@ def load(dataset="data/Spotify_Most_Streamed_Songs.csv"):
             speechiness_percent INTEGER,
             cover_url TEXT
         )
-    """
+        """
     )
 
     # Insert data into the database
     c.executemany(
         """
         INSERT INTO SpotifyDB (
-            track_name, artist_name, artist_count, released_year, released_month, released_day, 
-            in_spotify_playlists, in_spotify_charts, streams, in_apple_playlists, key, mode, 
-            danceability_percent, valence_percent, energy_percent, acousticness_percent, 
-            instrumentalness_percent, liveness_percent, speechiness_percent, cover_url
+            track_name, artist_name, artist_count, released_year, released_month, 
+            released_day, in_spotify_playlists, in_spotify_charts, streams, 
+            in_apple_playlists, key, mode, danceability_percent, valence_percent, 
+            energy_percent, acousticness_percent, instrumentalness_percent, 
+            liveness_percent, speechiness_percent, cover_url
         ) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
