@@ -117,4 +117,37 @@ INSERT INTO SpotifyDB (
 
 SELECT * FROM SpotifyDB WHERE artist_name='Glass Animals';
 
-SELECT * FROM SpotifyDB;
+SELECT * FROM SpotifyDB;```sql
+INSERT INTO SpotifyDB VALUES (
+            Blinding Lights, The Weeknd, 1, 2019, 11, 
+            29, 500, 150, 3200000000, 
+            200, G#, Major, 65, 75, 
+            85, 5, 0, 10, 
+            4, https://cover.url);
+```
+
+```sql
+UPDATE SpotifyDB SET 
+        track_name=Good 4 U, artist_name=Olivia Rodrigo, artist_count=1, 
+        released_year=2021, released_month=5, released_day=14, 
+        in_spotify_playlists=900, in_spotify_charts=300, 
+        streams=2000000000, in_apple_playlists=250, key=A, mode=Major, 
+        danceability_percent=60, valence_percent=50, 
+        energy_percent=70, acousticness_percent=20, 
+        instrumentalness_percent=0, liveness_percent=15, 
+        speechiness_percent=5, cover_url=https://cover.url 
+        WHERE id=1;
+```
+
+```sql
+UPDATE SpotifyDB SET artist_name = 'Chris' WHERE id = 3;
+```
+
+```sql
+UPDATE SpotifyDB SET artist_name = 'Chris' WHERE id = 3;
+```
+
+```sql
+UPDATE SpotifyDB SET artist_name = 'Chris' WHERE id = 3;
+```
+

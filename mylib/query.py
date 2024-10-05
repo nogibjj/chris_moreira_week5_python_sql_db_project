@@ -1,210 +1,97 @@
-"""Query the SpotifyDB database"""
+# Query the Database
+
 
 import sqlite3
 
-# Define a global variable for the log file
-LOG_FILE = "query_log.md"
 
-
-def log_query(query):
-    """Adds to a query markdown file"""
-    with open(LOG_FILE, "a") as file:
-        file.write(f"```sql\n{query}\n```\n\n")
-
-
-def general_query(query):
-    """Runs a query a user inputs"""
-    # Connect to the SQLite database
+def query_create():
     conn = sqlite3.connect("SpotifyDB.db")
-
-    # Create a cursor object to execute SQL queries
     cursor = conn.cursor()
 
-    # Execute the query
-    cursor.execute(query)
+    # Inserting a random row into the SpotifyDB table
+    random_record = (
+        "Random Song",
+        "Random Artist",
+        1,
+        2024,
+        10,
+        3,
+        400,
+        100,
+        150000000,
+        200,
+        "C#",
+        "Major",
+        60,
+        70,
+        80,
+        10,
+        0,
+        20,
+        5,
+        "https://coverurl.com",
+    )
 
-    # If the query modifies the database, commit the changes
-    if (
-        query.strip().lower().startswith("insert")
-        or query.strip().lower().startswith("update")
-        or query.strip().lower().startswith("delete")
-    ):
-        conn.commit()
-
-    # Close the cursor and connection
-    cursor.close()
-    conn.close()
-
-    log_query(f"{query}")
-
-
-def create_record(
-    track_name,
-    artist_name,
-    artist_count,
-    released_year,
-    released_month,
-    released_day,
-    in_spotify_playlists,
-    in_spotify_charts,
-    streams,
-    in_apple_playlists,
-    key,
-    mode,
-    danceability_percent,
-    valence_percent,
-    energy_percent,
-    acousticness_percent,
-    instrumentalness_percent,
-    liveness_percent,
-    speechiness_percent,
-    cover_url,
-):
-    """Create example query for SpotifyDB"""
-    conn = sqlite3.connect("SpotifyDB.db")
-    c = conn.cursor()
-    c.execute(
+    # Insert the record
+    cursor.execute(
         """
-        INSERT INTO SpotifyDB 
-        (track_name, artist_name, artist_count, released_year, released_month, 
-        released_day, in_spotify_playlists, in_spotify_charts, streams, 
-        in_apple_playlists, key, mode, danceability_percent, valence_percent, 
-        energy_percent, acousticness_percent, instrumentalness_percent, liveness_percent, 
-        speechiness_percent, cover_url) 
+        INSERT INTO SpotifyDB (
+            track_name, artist_name, artist_count, released_year, released_month, released_day, 
+            in_spotify_playlists, in_spotify_charts, streams, in_apple_playlists, key, mode, 
+            danceability_percent, valence_percent, energy_percent, acousticness_percent, 
+            instrumentalness_percent, liveness_percent, speechiness_percent, cover_url
+        ) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
-        (
-            track_name,
-            artist_name,
-            artist_count,
-            released_year,
-            released_month,
-            released_day,
-            in_spotify_playlists,
-            in_spotify_charts,
-            streams,
-            in_apple_playlists,
-            key,
-            mode,
-            danceability_percent,
-            valence_percent,
-            energy_percent,
-            acousticness_percent,
-            instrumentalness_percent,
-            liveness_percent,
-            speechiness_percent,
-            cover_url,
-        ),
+        random_record,
     )
+
     conn.commit()
     conn.close()
-
-    # Log the query
-    log_query(
-        f"""INSERT INTO SpotifyDB VALUES (
-            {track_name}, {artist_name}, {artist_count}, {released_year}, {released_month}, 
-            {released_day}, {in_spotify_playlists}, {in_spotify_charts}, {streams}, 
-            {in_apple_playlists}, {key}, {mode}, {danceability_percent}, {valence_percent}, 
-            {energy_percent}, {acousticness_percent}, {instrumentalness_percent}, {liveness_percent}, 
-            {speechiness_percent}, {cover_url});"""
-    )
+    return "Create Success"
 
 
-def update_record(
-    record_id,
-    track_name,
-    artist_name,
-    artist_count,
-    released_year,
-    released_month,
-    released_day,
-    in_spotify_playlists,
-    in_spotify_charts,
-    streams,
-    in_apple_playlists,
-    key,
-    mode,
-    danceability_percent,
-    valence_percent,
-    energy_percent,
-    acousticness_percent,
-    instrumentalness_percent,
-    liveness_percent,
-    speechiness_percent,
-    cover_url,
-):
-    """Update example query for SpotifyDB"""
+def query_read():
     conn = sqlite3.connect("SpotifyDB.db")
-    c = conn.cursor()
-    c.execute(
+    cursor = conn.cursor()
+    # read execution
+    cursor.execute("SELECT * FROM SpotifyDB LIMIT 10")
+    conn.close()
+    return "Read Success"
+
+
+def query_update():
+    conn = sqlite3.connect("SpotifyDB.db")
+    cursor = conn.cursor()
+
+    # Update the artist_name to 'Chris' for the record where id is 3
+    cursor.execute(
         """
         UPDATE SpotifyDB 
-        SET track_name=?, artist_name=?, artist_count=?, released_year=?, released_month=?, 
-        released_day=?, in_spotify_playlists=?, in_spotify_charts=?, streams=?, 
-        in_apple_playlists=?, key=?, mode=?, danceability_percent=?, valence_percent=?, 
-        energy_percent=?, acousticness_percent=?, instrumentalness_percent=?, liveness_percent=?, 
-        speechiness_percent=?, cover_url=?
-        WHERE id=?
-        """,
-        (
-            track_name,
-            artist_name,
-            artist_count,
-            released_year,
-            released_month,
-            released_day,
-            in_spotify_playlists,
-            in_spotify_charts,
-            streams,
-            in_apple_playlists,
-            key,
-            mode,
-            danceability_percent,
-            valence_percent,
-            energy_percent,
-            acousticness_percent,
-            instrumentalness_percent,
-            liveness_percent,
-            speechiness_percent,
-            cover_url,
-            record_id,
-        ),
-    )
-    conn.commit()
-    conn.close()
-
-    # Log the query
-    log_query(
-        f"""UPDATE SpotifyDB SET 
-        track_name={track_name}, artist_name={artist_name}, artist_count={artist_count}, 
-        released_year={released_year}, released_month={released_month}, released_day={released_day}, 
-        in_spotify_playlists={in_spotify_playlists}, in_spotify_charts={in_spotify_charts}, 
-        streams={streams}, in_apple_playlists={in_apple_playlists}, key={key}, mode={mode}, 
-        danceability_percent={danceability_percent}, valence_percent={valence_percent}, 
-        energy_percent={energy_percent}, acousticness_percent={acousticness_percent}, 
-        instrumentalness_percent={instrumentalness_percent}, liveness_percent={liveness_percent}, 
-        speechiness_percent={speechiness_percent}, cover_url={cover_url} 
-        WHERE id={record_id};"""
+        SET artist_name = 'Chris' 
+        WHERE id = 3
+        """
     )
 
-
-def delete_record(record_id):
-    """Delete example query for SpotifyDB"""
-    conn = sqlite3.connect("SpotifyDB.db")
-    c = conn.cursor()
-    c.execute("DELETE FROM SpotifyDB WHERE id=?", (record_id,))
     conn.commit()
     conn.close()
-
-    # Log the query
-    log_query(f"DELETE FROM SpotifyDB WHERE id={record_id};")
+    return "Update Success"
 
 
-def read_data():
-    """Read data from SpotifyDB"""
+def query_delete():
     conn = sqlite3.connect("SpotifyDB.db")
-    c = conn.cursor()
-    c.execute("SELECT * FROM SpotifyDB")
-    data = c.fetchall()
-    log_query("SELECT * FROM SpotifyDB;")
-    return data
+    cursor = conn.cursor()
+
+    # Delete the record where id is 5
+    cursor.execute("DELETE FROM SpotifyDB WHERE id = 5")
+
+    conn.commit()
+    conn.close()
+    return "Delete Success"
+
+
+if __name__ == "__main__":
+    query_create()
+    query_read()
+    query_update()
+    query_delete()

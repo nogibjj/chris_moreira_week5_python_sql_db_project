@@ -1,22 +1,23 @@
-"""
-Transforms and Loads data into the local SQLite3 database
-"""
-
 import sqlite3
 import csv
 
 
 # load the csv file and insert into a new sqlite3 database
-def load(dataset="data/Spotify Most Streamed Songs.csv"):
+def load(dataset="data/Spotify_Most_Streamed_Songs.csv"):
     """Transforms and Loads data into the local SQLite3 database"""
     payload = csv.reader(open(dataset, newline=""), delimiter=",")
-    # skips the header of csv
+
+    # Skip the header of CSV
     next(payload)
+
+    # Connect to the SQLite database
     conn = sqlite3.connect("SpotifyDB.db")
     c = conn.cursor()
+
+    # Drop table if exists
     c.execute("DROP TABLE IF EXISTS SpotifyDB")
 
-    # Create the table with all columns represented
+    # Create the table with the exact 20 columns needed
     c.execute(
         """
         CREATE TABLE SpotifyDB (
@@ -49,31 +50,20 @@ def load(dataset="data/Spotify Most Streamed Songs.csv"):
     c.executemany(
         """
         INSERT INTO SpotifyDB (
-            track_name, 
-            artist_name, 
-            artist_count, 
-            released_year, 
-            released_month, 
-            released_day, 
-            in_spotify_playlists, 
-            in_spotify_charts, 
-            streams, 
-            in_apple_playlists, 
-            key, 
-            mode, 
-            danceability_percent, 
-            valence_percent, 
-            energy_percent, 
-            acousticness_percent, 
-            instrumentalness_percent, 
-            liveness_percent, 
-            speechiness_percent, 
-            cover_url
+            track_name, artist_name, artist_count, released_year, released_month, released_day, 
+            in_spotify_playlists, in_spotify_charts, streams, in_apple_playlists, key, mode, 
+            danceability_percent, valence_percent, energy_percent, acousticness_percent, 
+            instrumentalness_percent, liveness_percent, speechiness_percent, cover_url
         ) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """,
         payload,
     )
 
     conn.commit()
     conn.close()
     return "SpotifyDB.db"
+
+
+if __name__ == "__main__":
+    load()
